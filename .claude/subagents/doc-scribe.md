@@ -12,6 +12,7 @@ deniedTools:
   - Edit(.claude/*)
   - Bash
 model: haiku
+# Model choice rationale: see .claude/config.md
 ---
 
 # Doc Scribe Subagent

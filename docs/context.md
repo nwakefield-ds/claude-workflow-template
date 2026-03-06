@@ -8,6 +8,12 @@
 
 **[Project Name]** — [One sentence description of what this project does and who it serves.]
 
+<!--
+EXAMPLE:
+**TaskFlow** — A lightweight task management API that helps small teams track
+work items and deadlines without the overhead of full project management tools.
+-->
+
 ### Core Value Props
 - [Value 1]
 - [Value 2]
@@ -19,6 +25,14 @@
 - **AI**: [e.g., Anthropic Claude]
 - **Infrastructure**: [e.g., Docker + GitHub Actions]
 
+<!--
+EXAMPLE (Node.js API):
+- **Backend**: Node.js 20 + Express 4 + SQLite
+- **Auth**: JWT (jsonwebtoken)
+- **Testing**: Jest + Supertest
+- **Infrastructure**: Railway (hosting), GitHub Actions (CI)
+-->
+
 ---
 
 ## Key Numbers (Volatile — update when code changes)
@@ -29,6 +43,13 @@
 - [N] backend tests ([N]% coverage)
 - [N] E2E tests
 
+<!--
+EXAMPLE:
+- 12 API endpoints (GET/POST/PUT/DELETE on /tasks, /users, /teams)
+- 3 database tables (tasks, users, team_memberships)
+- 47 unit tests (82% coverage)
+-->
+
 ---
 
 ## Data Storage
@@ -36,6 +57,12 @@
 - **[Database]**: `[path]` — [what's in it]
 - **[Cache]**: `[path]` — [what's cached, TTL]
 - **[Files]**: `[path]` — [what's stored]
+
+<!--
+EXAMPLE:
+- **SQLite**: `data/app.db` — tasks, users, team_memberships
+- **File cache**: `data/cache/` — API response cache (1-hour TTL)
+-->
 
 ---
 
@@ -45,6 +72,38 @@
 - `[path]` — [what it does, why important]
 - `[path]` — [what it does, why important]
 
+<!--
+EXAMPLE:
+- `src/routes/tasks.js`    — CRUD endpoints for tasks (main feature)
+- `src/middleware/auth.js` — JWT validation (applied to all /api/* routes)
+- `src/db/schema.sql`      — Database schema (source of truth for data shape)
+- `src/config.js`          — Environment config loader
+-->
+
+---
+
+## Architecture Diagram
+
+<!--
+Draw a simple ASCII diagram of how the main components connect.
+
+EXAMPLE:
+  Browser
+     │
+     ▼
+  Next.js (port 3000)
+     │ fetch /api/*
+     ▼
+  Express API (port 8000)
+     │
+     ├── SQLite (data/app.db)
+     └── External: Anthropic API
+-->
+
+```
+[Your architecture here]
+```
+
 ---
 
 ## Architecture Patterns
@@ -52,6 +111,13 @@
 - **[Pattern name]**: [Brief description]
 - **[Pattern name]**: [Brief description]
 - **[Pattern name]**: [Brief description]
+
+<!--
+EXAMPLE:
+- **Repository pattern**: DB queries isolated in `src/db/*.js` files, not inline in routes
+- **Middleware chain**: auth → rate-limit → validation → handler
+- **Error convention**: All errors return `{ error: string, code: string }` JSON
+-->
 
 ---
 

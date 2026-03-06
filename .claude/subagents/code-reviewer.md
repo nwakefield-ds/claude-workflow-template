@@ -17,6 +17,7 @@ deniedTools:
   - Bash(rm *)
   - Bash(sudo*)
 model: sonnet
+# Model choice rationale: see .claude/config.md
 ---
 
 # Code Reviewer Subagent

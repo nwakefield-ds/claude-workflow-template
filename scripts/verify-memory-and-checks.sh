@@ -14,7 +14,8 @@ set -euo pipefail
 # Graduated Enforcement:
 #   - feat:, feature/, add: → REQUIRE doc update (block if missing)
 #   - fix:, bugfix/        → WARN if no doc update (don't block)
-#   - chore:, style:, docs:, refactor:, test: → SKIP doc enforcement
+#   - refactor:            → WARN (docs may need updating, but don't block)
+#   - chore:, style:, docs:, test:, ci:, build: → SKIP doc enforcement
 # ============================================================================
 
 echo "🔍 Verifying memory docs and running checks..."
@@ -83,8 +84,11 @@ get_enforcement_level() {
   local msg_lower=$(echo "$commit_msg" | tr '[:upper:]' '[:lower:]')
 
   case "$msg_lower" in
-    chore:*|chore\(*|style:*|docs:*|refactor:*|test:*|ci:*|build:*)
+    chore:*|chore\(*|style:*|docs:*|test:*|ci:*|build:*)
       echo "skip"
+      ;;
+    refactor:*|refactor\(*)
+      echo "warn"
       ;;
     fix:*|fix\(*|bugfix:*|bugfix/*)
       echo "warn"
@@ -178,15 +182,16 @@ echo ""
 if [[ $CODE_CHANGED -eq 1 && $MEMORY_CHANGED -eq 0 && $SKIP_DOC_CHECK -eq 0 ]]; then
   case "$ENFORCEMENT" in
     skip)
-      echo "✓ Doc update skipped (maintenance commit: chore/style/docs/refactor/test)"
+      echo "✓ Doc update skipped (maintenance commit: chore/style/docs/test/ci)"
       echo ""
       ;;
     warn)
       echo "⚠️  WARNING: Code changed but memory docs not updated"
       echo ""
-      echo "For bug fixes, doc updates are recommended but not required."
+      echo "For fix: and refactor: commits, doc updates are recommended but not required."
+      echo "Consider updating docs/context.md or docs/decisions.md after this push."
       echo ""
-      echo "Proceeding anyway (fix: commits get a pass)..."
+      echo "Proceeding anyway..."
       echo ""
       ;;
     require)
@@ -199,10 +204,11 @@ if [[ $CODE_CHANGED -eq 1 && $MEMORY_CHANGED -eq 0 && $SKIP_DOC_CHECK -eq 0 ]]; 
         echo "  • $doc"
       done
       echo ""
-      echo "Commit type shortcuts (bypass doc check):"
-      echo "  • fix: or bugfix/ - bug fixes (warns only)"
-      echo "  • chore: or style: - maintenance (no check)"
-      echo "  • refactor: or test: - internal changes (no check)"
+      echo "Commit type shortcuts:"
+      echo "  • fix: or bugfix/  - bug fixes (warns, doesn't block)"
+      echo "  • refactor:        - refactors (warns, doesn't block)"
+      echo "  • chore: or style: - maintenance (no check at all)"
+      echo "  • test: or ci:     - test/CI changes (no check at all)"
       echo ""
       echo "Emergency bypass: ./scripts/verify-memory-and-checks.sh --skip-doc-check"
       echo ""

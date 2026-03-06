@@ -16,6 +16,7 @@ docs/
   todos.md                   ← What to work on next (prioritized roadmap)
 
 .claude/
+  config.md                  ← Model assignments and agent settings (single source of truth)
   settings.local.json        ← Hooks (auto-format, block .env edits, save HANDOFF)
   hooks/
     save-handoff.sh          ← Captures git state before compaction
@@ -28,11 +29,16 @@ docs/
     update-memory-docs.md    ← Quick doc update patterns
     debug-test-failure.md    ← Systematic debugging workflow
     delegate-to-subagent.md  ← When/how to use subagents
+  commands/
+    context-refresh.md       ← /context-refresh slash command definition
+    finish.md                ← /finish slash command definition
   rules/
     common-pitfalls.md       ← Anti-patterns and how to avoid them
 
 scripts/
   verify-memory-and-checks.sh  ← Pre-push hook: enforce docs + run tests
+
+.env.example                 ← Template for required environment variables
 ```
 
 ## Quick Start
@@ -80,22 +86,70 @@ Change to your formatter:
 - **Go:** `gofmt -w "$FILE"`
 - **Ruby:** `rubocop -a "$FILE"`
 
+---
+
 ## How It Works
 
 **Memory docs** (`docs/`) are the source of truth. Claude reads them at the start of every session and updates them after every significant change.
 
-**Graduated enforcement** — the verify script blocks `feat:` commits without doc updates, warns on `fix:` commits, and skips checks entirely for `chore:`/`refactor:` commits.
+**Graduated enforcement** — the verify script blocks `feat:` commits without doc updates, warns on `fix:` and `refactor:` commits (but does not block), and skips checks entirely for `chore:`/`test:`/`ci:` commits.
 
 **Subagents** keep expensive work out of your main context window. `doc-scribe` (Haiku) handles doc updates for ~40% less cost than Sonnet. `code-reviewer` (Sonnet) catches bugs before they reach production.
 
 **Session continuity** — `HANDOFF.md` is auto-saved before compaction and captures your git state so the next session can pick up where you left off.
 
-## Slash Commands Available
+---
+
+## Slash Commands
 
 After installing, these commands work in Claude Code:
 
-- `/context-refresh` — Re-ground in docs at session start
-- `/finish` — Full workflow: docs + tests + code review + commit message
+| Command | What it does |
+|---------|-------------|
+| `/context-refresh` | Re-reads all `docs/` files and produces a structured project summary. Use at session start. |
+| `/finish` | Full end-of-task workflow: update docs → run verify script → delegate to code-reviewer → suggest conventional commit message. |
+
+Command definitions live in `.claude/commands/` — edit them to customize the workflow for your project.
+
+---
+
+## Example: What a Populated `docs/context.md` Looks Like
+
+Below is a before/after for a toy Node.js task API. The `[PLACEHOLDER]` template on the left becomes the real project context on the right.
+
+**Before (template):**
+```markdown
+**[Project Name]** — [One sentence description]
+
+### Tech Stack
+- **Backend**: [e.g., Python FastAPI + PostgreSQL]
+- **Frontend**: [e.g., Next.js 15 + TypeScript]
+
+## Key Numbers
+- [N] API endpoints
+- [N] database tables
+```
+
+**After (populated):**
+```markdown
+**TaskFlow** — A lightweight REST API for team task management,
+built for small teams that don't need full project management overhead.
+
+### Tech Stack
+- **Backend**: Node.js 20 + Express 4 + SQLite
+- **Auth**: JWT (jsonwebtoken)
+- **Testing**: Jest + Supertest
+- **Infrastructure**: Railway (hosting), GitHub Actions (CI)
+
+## Key Numbers
+- 12 API endpoints (tasks: 5, users: 4, teams: 3)
+- 3 database tables (tasks, users, team_memberships)
+- 47 unit tests (82% coverage)
+```
+
+The populated version gives Claude exactly the context it needs to work accurately without re-reading source files every session.
+
+---
 
 ## Customization
 
@@ -103,3 +157,6 @@ The template is intentionally minimal. Add your own:
 - `.claude/rules/[stack]/` files for stack-specific patterns
 - Additional subagents for specialized work (e.g., a `migration-writer`)
 - Extra skills for your common workflows
+- More slash commands in `.claude/commands/`
+
+Model assignments for subagents are centralized in `.claude/config.md`.

@@ -26,6 +26,7 @@ deniedTools:
   - Bash(rm *)
   - Bash(sudo*)
 model: haiku
+# Model choice rationale: see .claude/config.md
 ---
 
 # Test Runner Subagent

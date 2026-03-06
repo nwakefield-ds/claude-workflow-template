@@ -4,19 +4,59 @@ Prioritized list of next actions. Each item includes acceptance criteria, effort
 
 **Effort:** S (< 1 day), M (1-2 days), L (3-5 days), XL (1-2 weeks)
 **Value:** Low, Medium, High, Critical
-**Scope:** Define your own scope tags (e.g., `backend`, `frontend`, `infra`, `all`)
+**Priority:** P0 (blocker/this week), P1 (next sprint), P2 (next month), P3 (parked)
+
+<!--
+PRIORITY GUIDE:
+P0 — Blocking launch or a teammate. Do this now.
+P1 — High value, planned for next sprint. Do this soon.
+P2 — Good idea, not urgent. Schedule it.
+P3 — Parked. Revisit when circumstances change.
+
+EXAMPLE ENTRIES — copy and adapt:
+
+### T-01: Add rate limiting to API `P0` `backend`
+| Effort | Value | Priority |
+|--------|-------|----------|
+| S | Critical | P0 |
+
+**Why:** Without rate limiting, a single client can exhaust the server.
+
+**Acceptance Criteria:**
+- [ ] 100 req/min limit per IP on all /api/* routes
+- [ ] Returns 429 with Retry-After header when exceeded
+- [ ] Limit configurable via env var RATE_LIMIT_RPM
+
+**Files:** `src/middleware/rate-limit.js`
 
 ---
 
-## 🔴 High Priority (Next Sprint)
+### T-02: Add pagination to GET /tasks `P1` `backend`
+| Effort | Value | Priority |
+|--------|-------|----------|
+| S | High | P1 |
+
+**Why:** Response grows unbounded as tasks accumulate.
+
+**Acceptance Criteria:**
+- [ ] Accepts ?page=N&limit=N query params
+- [ ] Returns { data, total, page, pages } envelope
+- [ ] Default limit: 20, max: 100
+
+**Files:** `src/routes/tasks.js`
+-->
+
+---
+
+## 🔴 P0 — Do This Week
 
 ### T-01: [First Task Name] `scope`
 
-| Effort | Value | Scope |
-|--------|-------|-------|
-| M | High | backend |
+| Effort | Value | Priority |
+|--------|-------|----------|
+| M | High | P0 |
 
-**Why:** [One sentence explaining the value/urgency.]
+**Why:** [One sentence explaining the urgency.]
 
 **Acceptance Criteria:**
 - [ ] [Specific, verifiable outcome]
@@ -27,13 +67,13 @@ Prioritized list of next actions. Each item includes acceptance criteria, effort
 
 ---
 
-## 🟡 Medium Priority (Next Month)
+## 🟡 P1 — Next Sprint
 
 ### T-02: [Second Task Name] `scope`
 
-| Effort | Value | Scope |
-|--------|-------|-------|
-| S | Medium | frontend |
+| Effort | Value | Priority |
+|--------|-------|----------|
+| S | Medium | P1 |
 
 **Why:** [One sentence.]
 
@@ -42,29 +82,29 @@ Prioritized list of next actions. Each item includes acceptance criteria, effort
 
 ---
 
-## 🟢 Low Priority (Future)
+## 🟢 P2 — Next Month
 
 ### T-03: [Future Task] `scope`
 
-| Effort | Value | Scope |
-|--------|-------|-------|
-| L | Low | all |
+| Effort | Value | Priority |
+|--------|-------|----------|
+| L | Low | P2 |
 
 **Why:** [One sentence.]
 
 ---
 
-## 🚀 Prepare for Production (Parked)
+## ⬜ P3 — Parked
 
-Tasks to tackle when preparing for public/production deployment.
+Tasks to tackle when circumstances change (pre-launch, team growth, etc.).
 
 ### T-04: Add Authentication `all`
 
-| Effort | Value | Scope |
-|--------|-------|-------|
-| L | Critical | all |
+| Effort | Value | Priority |
+|--------|-------|----------|
+| L | Critical | P3 |
 
-**Why:** No auth — unsafe for public deployment.
+**Why:** No auth — unsafe for public deployment. Parked until launch prep.
 
 ---
 
