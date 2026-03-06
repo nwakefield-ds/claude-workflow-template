@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+
+  "_comment": [
+    "This is a template for personal/local Claude Code overrides.",
+    "Copy to .claude/settings.local.json and customize — do NOT commit that file.",
+    "Settings here override .claude/settings.json for your machine only.",
+    "Common uses: personal model preferences, extra allowed tools, local-only hooks."
+  ],
+
+  "model": "claude-sonnet-4-6",
+
+  "permissions": {
+    "allow": [],
+    "deny": []
+  }
+}

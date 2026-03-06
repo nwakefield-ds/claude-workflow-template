@@ -17,7 +17,8 @@ docs/
 
 .claude/
   config.md                  ← Model assignments and agent settings (single source of truth)
-  settings.local.json        ← Hooks (auto-format, block .env edits, save HANDOFF)
+  settings.json              ← Hooks (auto-format, block .env edits, save HANDOFF)
+  settings.local.example.json ← Template for personal local overrides (don't commit settings.local.json)
   hooks/
     save-handoff.sh          ← Captures git state before compaction
   subagents/
@@ -80,7 +81,7 @@ Create `.claude/rules/backend/` or `.claude/rules/frontend/` with patterns for y
 
 ### 5. Adjust hooks for your language
 
-Edit `.claude/settings.local.json` — the PostToolUse hook auto-formats Python with `black`.
+Edit `.claude/settings.json` — the PostToolUse hook auto-formats Python with `black`.
 Change to your formatter:
 - **JS/TS:** `prettier --write "$FILE"`
 - **Go:** `gofmt -w "$FILE"`

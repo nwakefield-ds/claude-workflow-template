@@ -32,7 +32,7 @@ Update this file when changing models — then update each subagent's frontmatte
 
 ## Hook Configuration
 
-Hooks are defined in `.claude/settings.local.json`. Current hooks:
+Hooks are defined in `.claude/settings.json`. Current hooks:
 
 | Hook | Trigger | Action |
 |------|---------|--------|
@@ -42,7 +42,7 @@ Hooks are defined in `.claude/settings.local.json`. Current hooks:
 
 ### Changing the Auto-Formatter
 
-Edit `.claude/settings.local.json` — replace `black "$FILE"` with your formatter:
+Edit `.claude/settings.json` — replace `black "$FILE"` with your formatter:
 
 ```bash
 # Python

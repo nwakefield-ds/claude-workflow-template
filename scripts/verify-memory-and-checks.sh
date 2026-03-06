@@ -290,17 +290,24 @@ for dir in "." "frontend" "frontend-v2" "client" "web"; do
 
     if [[ ! -d "node_modules" ]]; then
       echo "   ⚠️  node_modules not found — run: npm install"
+      CHECKS_FAILED=1
     else
-      # Lint
+      # Lint — try npm run lint first, fall back to direct eslint, fail explicitly if both fail
       if npm run lint --silent 2>/dev/null; then
         echo "   ✓ Lint passed"
       elif npx eslint . --max-warnings 0 --quiet 2>/dev/null; then
         echo "   ✓ Lint passed"
+      else
+        echo "   ✗ Lint failed"
+        CHECKS_FAILED=1
       fi
 
-      # Tests
+      # Tests — explicitly fail if npm test exits non-zero
       if npm test -- --watchAll=false --passWithNoTests --silent 2>/dev/null; then
         echo "   ✓ Tests passed"
+      else
+        echo "   ✗ Tests failed"
+        CHECKS_FAILED=1
       fi
     fi
 
