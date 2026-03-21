@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # ============================================================================
-# Memory Doc Enforcement & Pre-Push Checks
+# Project Doc Enforcement & Pre-Push Checks
 # ============================================================================
-# Ensures memory docs are updated when code changes, and runs fast checks.
+# Ensures project docs are updated when code changes, and runs fast checks.
 #
 # Usage:
 #   ./scripts/verify-memory-and-checks.sh                    # Check against main
@@ -18,11 +18,11 @@ set -euo pipefail
 #   - chore:, style:, docs:, test:, ci:, build: → SKIP doc enforcement
 # ============================================================================
 
-echo "🔍 Verifying memory docs and running checks..."
+echo "🔍 Verifying project docs and running checks..."
 echo ""
 
 # Configuration
-MEMORY_DOCS=(
+PROJECT_DOCS=(
   "docs/context.md"
   "docs/decisions.md"
   "docs/dev.md"
@@ -136,7 +136,7 @@ echo ""
 # ============================================================================
 
 CODE_CHANGED=0
-MEMORY_CHANGED=0
+DOCS_CHANGED=0
 
 for file in $CHANGED_FILES; do
   for pattern in "${CODE_PATTERNS[@]}"; do
@@ -153,9 +153,9 @@ for file in $CHANGED_FILES; do
     fi
   done
 
-  for doc in "${MEMORY_DOCS[@]}"; do
+  for doc in "${PROJECT_DOCS[@]}"; do
     if [[ "$file" == "$doc" ]]; then
-      MEMORY_CHANGED=1
+      DOCS_CHANGED=1
       break
     fi
   done
@@ -163,11 +163,11 @@ done
 
 echo "📝 Change Analysis:"
 echo "   Code changed:        $([ $CODE_CHANGED -eq 1 ] && echo "✓ YES" || echo "✗ No")"
-echo "   Memory docs changed: $([ $MEMORY_CHANGED -eq 1 ] && echo "✓ YES" || echo "✗ No")"
+echo "   Project docs changed: $([ $DOCS_CHANGED -eq 1 ] && echo "✓ YES" || echo "✗ No")"
 echo ""
 
 # ============================================================================
-# Step 3: Enforce Memory Doc Updates (Graduated)
+# Step 3: Enforce Project Doc Updates (Graduated)
 # ============================================================================
 
 COMMIT_MSG=$(git log -1 --format=%s 2>/dev/null || echo "")
@@ -179,14 +179,14 @@ if [[ -n "$COMMIT_MSG" ]]; then
 fi
 echo ""
 
-if [[ $CODE_CHANGED -eq 1 && $MEMORY_CHANGED -eq 0 && $SKIP_DOC_CHECK -eq 0 ]]; then
+if [[ $CODE_CHANGED -eq 1 && $DOCS_CHANGED -eq 0 && $SKIP_DOC_CHECK -eq 0 ]]; then
   case "$ENFORCEMENT" in
     skip)
       echo "✓ Doc update skipped (maintenance commit: chore/style/docs/test/ci)"
       echo ""
       ;;
     warn)
-      echo "⚠️  WARNING: Code changed but memory docs not updated"
+      echo "⚠️  WARNING: Code changed but project docs not updated"
       echo ""
       echo "For fix: and refactor: commits, doc updates are recommended but not required."
       echo "Consider updating docs/context.md or docs/decisions.md after this push."
@@ -195,12 +195,12 @@ if [[ $CODE_CHANGED -eq 1 && $MEMORY_CHANGED -eq 0 && $SKIP_DOC_CHECK -eq 0 ]]; 
       echo ""
       ;;
     require)
-      echo "❌ MEMORY DOC CHECK FAILED"
+      echo "❌ DOC CHECK FAILED"
       echo ""
-      echo "Code changes detected, but memory docs were not updated."
+      echo "Code changes detected, but project docs were not updated."
       echo ""
       echo "When you change code, update at least one of:"
-      for doc in "${MEMORY_DOCS[@]}"; do
+      for doc in "${PROJECT_DOCS[@]}"; do
         echo "  • $doc"
       done
       echo ""
@@ -217,12 +217,12 @@ if [[ $CODE_CHANGED -eq 1 && $MEMORY_CHANGED -eq 0 && $SKIP_DOC_CHECK -eq 0 ]]; 
   esac
 fi
 
-if [[ $MEMORY_CHANGED -eq 1 ]]; then
-  echo "✓ Memory docs updated"
+if [[ $DOCS_CHANGED -eq 1 ]]; then
+  echo "✓ Project docs updated"
   echo ""
 fi
 
-if [[ $CODE_CHANGED -eq 0 && $MEMORY_CHANGED -eq 0 ]]; then
+if [[ $CODE_CHANGED -eq 0 && $DOCS_CHANGED -eq 0 ]]; then
   echo "✓ No code or doc changes (docs-only changes like README are OK)"
   echo ""
 fi
@@ -246,7 +246,7 @@ if [[ -f "requirements.txt" || -f "pyproject.toml" ]] && [[ $CODE_CHANGED -eq 1 
     # Syntax check all changed Python files
     for file in $CHANGED_FILES; do
       if [[ "$file" == *.py ]] && [[ -f "$file" ]]; then
-        if python3 -c "import ast; ast.parse(open('$file').read())" 2>/dev/null; then
+        if python3 -c "import ast,sys; ast.parse(open(sys.argv[1]).read())" "$file" 2>/dev/null; then
           echo "   ✓ $file syntax OK"
         else
           echo "   ✗ $file syntax error"
@@ -360,6 +360,6 @@ fi
 
 echo "✅ ALL CHECKS PASSED"
 echo ""
-echo "Memory docs are in sync and fast checks passed."
+echo "Project docs are in sync and fast checks passed."
 echo "Safe to push! 🚀"
 exit 0

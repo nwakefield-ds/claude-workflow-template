@@ -1,4 +1,9 @@
-# Add API Endpoint Skill
+---
+name: add-api-endpoint
+description: Step-by-step workflow for adding a new API endpoint
+---
+
+# Add API Endpoint
 
 ## Steps
 

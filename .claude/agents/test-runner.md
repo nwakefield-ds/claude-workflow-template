@@ -1,35 +1,12 @@
 ---
-allowedTools:
-  - Read
-  - Glob
-  - Grep
-  - Bash(pytest*)
-  - Bash(python -m pytest*)
-  - Bash(python3 -m pytest*)
-  - Bash(npm test*)
-  - Bash(npm run*)
-  - Bash(npm ci*)
-  - Bash(npx eslint*)
-  - Bash(npx playwright*)
-  - Bash(go test*)
-  - Bash(bundle exec rspec*)
-  - Bash(python*)
-  - Bash(python3*)
-  - Bash(cd *)
-  - Bash(./scripts/*)
-deniedTools:
-  - Edit
-  - Write
-  - Bash(git add*)
-  - Bash(git commit*)
-  - Bash(git push*)
-  - Bash(rm *)
-  - Bash(sudo*)
+name: test-runner
+description: Runs lint, test, and build checks and summarizes results without editing code
+tools: Read, Glob, Grep, Bash(pytest*), Bash(python -m pytest*), Bash(python3 -m pytest*), Bash(npm test*), Bash(npm run*), Bash(npm ci*), Bash(npx eslint*), Bash(npx playwright*), Bash(go test*), Bash(bundle exec rspec*), Bash(python*), Bash(python3*), Bash(cd *), Bash(./scripts/*)
+disallowedTools: Edit, Write, Bash(git add*), Bash(git commit*), Bash(git push*), Bash(rm *), Bash(sudo*)
 model: haiku
-# Model choice rationale: see .claude/config.md
 ---
 
-# Test Runner Subagent
+# Test Runner Agent
 
 **Purpose:** Run lint/test/build checks and summarize results. Never edit code.
 

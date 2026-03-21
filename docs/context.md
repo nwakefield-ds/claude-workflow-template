@@ -136,7 +136,7 @@ EXAMPLE:
 - `CLAUDE.md` — Memory system, core workflow, delegation basics, context management
 - `.claude/rules/` — Stack-specific patterns
 
-**Subagents:**
+**Agents:**
 - `doc-scribe` — Updates docs/* only, uses Haiku
 - `test-runner` — Runs tests read-only, uses Haiku
 - `code-reviewer` — Reviews diffs, uses Sonnet

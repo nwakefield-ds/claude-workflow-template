@@ -1,26 +1,12 @@
 ---
-allowedTools:
-  - Read
-  - Glob
-  - Grep
-  - Bash(git diff*)
-  - Bash(git log*)
-  - Bash(git show*)
-  - Bash(wc*)
-deniedTools:
-  - Edit
-  - Write
-  - Bash(git add*)
-  - Bash(git commit*)
-  - Bash(git push*)
-  - Bash(git reset*)
-  - Bash(rm *)
-  - Bash(sudo*)
+name: code-reviewer
+description: Reviews code diffs for bugs, security issues, and consistency with project docs
+tools: Read, Glob, Grep, Bash(git diff*), Bash(git log*), Bash(git show*), Bash(wc*)
+disallowedTools: Edit, Write, Bash(git add*), Bash(git commit*), Bash(git push*), Bash(git reset*), Bash(rm *), Bash(sudo*)
 model: sonnet
-# Model choice rationale: see .claude/config.md
 ---
 
-# Code Reviewer Subagent
+# Code Reviewer Agent
 
 **Purpose:** Review code diffs for bugs, security issues, and consistency with docs.
 
@@ -34,7 +20,7 @@ model: sonnet
 
 **Security:** SQL injection, XSS, path traversal, exposed secrets, input validation, auth bypass, sensitive logs
 
-**Doc Consistency:** memory docs updated with code changes, architecture matches `docs/decisions.md`, commands in `docs/dev.md` still valid
+**Doc Consistency:** project docs updated with code changes, architecture matches `docs/decisions.md`, commands in `docs/dev.md` still valid
 
 **Code Quality:** clear naming, minimal duplication, functions <50 lines, tests for new features
 

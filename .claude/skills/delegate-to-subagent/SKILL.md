@@ -1,6 +1,11 @@
+---
+name: delegate-to-subagent
+description: Guidance on when and how to delegate work to agents
+---
+
 # Delegation Strategy
 
-## Available Subagents
+## Available Agents
 
 | Agent | Model | Purpose | Can do |
 |-------|-------|---------|--------|

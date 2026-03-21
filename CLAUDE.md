@@ -23,7 +23,7 @@ python3 -m pytest tests/ -v
 
 ---
 
-## Documentation Roles
+## Project Docs
 
 | Doc | Purpose | When to read | When to update |
 |-----|---------|-------------|----------------|
@@ -40,7 +40,7 @@ python3 -m pytest tests/ -v
 - `test-runner` (Haiku) — Runs tests, reports results
 - `code-reviewer` (Sonnet) — Reviews diffs for bugs/security
 
-Use subagents for verbose tests, large diff reviews, multi-doc updates.
+Agents are defined in `.claude/agents/`. Use them for verbose tests, large diff reviews, multi-doc updates.
 Use Read/Edit/Grep directly for 1-3 files.
 
 ---

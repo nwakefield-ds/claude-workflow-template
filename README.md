@@ -1,13 +1,11 @@
 # Claude Code Workflow Template
 
-A portable workflow system for Claude Code projects. Provides persistent memory, automated doc enforcement, code review, and session continuity.
+A portable workflow system for Claude Code projects. Provides persistent project docs, automated doc enforcement, code review, and session continuity.
 
 ## What's Included
 
 ```
 CLAUDE.md                    ← Claude's instructions (auto-loaded)
-HANDOFF.md                   ← Auto-saved session state before compaction
-WORKING_SET.md               ← Manual multi-session investigation notes
 
 docs/
   context.md                 ← What this project is (tech stack, key numbers)
@@ -16,25 +14,24 @@ docs/
   todos.md                   ← What to work on next (prioritized roadmap)
 
 .claude/
-  config.md                  ← Model assignments and agent settings (single source of truth)
   settings.json              ← Hooks (auto-format, block .env edits, save HANDOFF)
-  settings.local.example.json ← Template for personal local overrides (don't commit settings.local.json)
+  settings.local.example.json ← Template for personal local overrides (gitignored)
   hooks/
     save-handoff.sh          ← Captures git state before compaction
-  subagents/
+  agents/
     doc-scribe.md            ← Haiku agent for updating docs (cost-effective)
     test-runner.md           ← Haiku agent for running tests (read-only)
     code-reviewer.md         ← Sonnet agent for reviewing diffs
   skills/
-    add-api-endpoint.md      ← Step-by-step endpoint addition workflow
-    update-memory-docs.md    ← Quick doc update patterns
-    debug-test-failure.md    ← Systematic debugging workflow
-    delegate-to-subagent.md  ← When/how to use subagents
-  commands/
-    context-refresh.md       ← /context-refresh slash command definition
-    finish.md                ← /finish slash command definition
+    finish/SKILL.md          ← /finish — end-of-task workflow
+    context-refresh/SKILL.md ← /context-refresh — session start workflow
+    add-api-endpoint/SKILL.md ← Step-by-step endpoint addition workflow
+    update-memory-docs/SKILL.md ← Quick doc update patterns
+    debug-test-failure/SKILL.md ← Systematic debugging workflow
+    delegate-to-subagent/SKILL.md ← When/how to use agents
   rules/
     common-pitfalls.md       ← Anti-patterns and how to avoid them
+    model-assignments.md     ← Agent model assignments (single source of truth)
 
 scripts/
   verify-memory-and-checks.sh  ← Pre-push hook: enforce docs + run tests
@@ -91,17 +88,17 @@ Change to your formatter:
 
 ## How It Works
 
-**Memory docs** (`docs/`) are the source of truth. Claude reads them at the start of every session and updates them after every significant change.
+**Project docs** (`docs/`) are the source of truth. Claude reads them at the start of every session and updates them after every significant change.
 
 **Graduated enforcement** — the verify script blocks `feat:` commits without doc updates, warns on `fix:` and `refactor:` commits (but does not block), and skips checks entirely for `chore:`/`test:`/`ci:` commits.
 
-**Subagents** keep expensive work out of your main context window. `doc-scribe` (Haiku) handles doc updates for ~40% less cost than Sonnet. `code-reviewer` (Sonnet) catches bugs before they reach production.
+**Agents** keep expensive work out of your main context window. `doc-scribe` (Haiku) handles doc updates cheaply. `code-reviewer` (Sonnet) catches bugs before they reach production.
 
 **Session continuity** — `HANDOFF.md` is auto-saved before compaction and captures your git state so the next session can pick up where you left off.
 
 ---
 
-## Slash Commands
+## Skills (Slash Commands)
 
 After installing, these commands work in Claude Code:
 
@@ -110,7 +107,7 @@ After installing, these commands work in Claude Code:
 | `/context-refresh` | Re-reads all `docs/` files and produces a structured project summary. Use at session start. |
 | `/finish` | Full end-of-task workflow: update docs → run verify script → delegate to code-reviewer → suggest conventional commit message. |
 
-Command definitions live in `.claude/commands/` — edit them to customize the workflow for your project.
+Skill definitions live in `.claude/skills/` — edit them to customize the workflow for your project.
 
 ---
 
@@ -155,9 +152,8 @@ The populated version gives Claude exactly the context it needs to work accurate
 ## Customization
 
 The template is intentionally minimal. Add your own:
-- `.claude/rules/[stack]/` files for stack-specific patterns
-- Additional subagents for specialized work (e.g., a `migration-writer`)
-- Extra skills for your common workflows
-- More slash commands in `.claude/commands/`
+- `.claude/rules/` files for stack-specific patterns
+- Additional agents in `.claude/agents/` for specialized work (e.g., a `migration-writer`)
+- Extra skills in `.claude/skills/` for your common workflows
 
-Model assignments for subagents are centralized in `.claude/config.md`.
+Model assignments for agents are centralized in `.claude/rules/model-assignments.md`.

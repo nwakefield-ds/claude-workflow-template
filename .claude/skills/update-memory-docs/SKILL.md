@@ -1,4 +1,9 @@
-# Update Memory Docs Skill
+---
+name: update-memory-docs
+description: Quick reference for which project doc to update based on what changed
+---
+
+# Update Project Docs
 
 **When to update which doc:**
 

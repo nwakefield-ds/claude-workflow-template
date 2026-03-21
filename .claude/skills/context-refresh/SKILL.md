@@ -1,12 +1,17 @@
+---
+name: context-refresh
+description: Re-ground in project context at session start or after context drift
+---
+
 # /context-refresh
 
-Re-ground in project memory at the start of a session or after context drift.
+Re-ground in project context at the start of a session or after context drift.
 
 ---
 
 ## Steps
 
-1. **Read memory docs in order:**
+1. **Read project docs in order:**
 
 ```
 docs/context.md     ← What the project is (tech stack, key files, numbers)

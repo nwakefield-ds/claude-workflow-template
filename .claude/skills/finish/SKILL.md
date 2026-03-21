@@ -1,3 +1,8 @@
+---
+name: finish
+description: Full end-of-task workflow — update docs, run checks, review code, suggest commit
+---
+
 # /finish
 
 Full end-of-task workflow: update docs, run checks, review code, suggest commit.
@@ -8,7 +13,7 @@ Run this when you've completed a feature or fix and are ready to commit.
 
 ## Steps
 
-### 1. Update Memory Docs
+### 1. Update Project Docs
 
 At minimum, update one doc to reflect the changes made:
 
@@ -17,7 +22,7 @@ At minimum, update one doc to reflect the changes made:
 - **Commands or setup changed?** → `docs/dev.md`
 - **Task completed or new work found?** → `docs/todos.md` (mark done, add new items)
 
-Use the `doc-scribe` subagent if multiple docs need updating:
+Use the `doc-scribe` agent if multiple docs need updating:
 ```
 Delegate to doc-scribe: "Update docs to reflect [describe changes]"
 ```
@@ -34,7 +39,7 @@ If it fails:
 
 ### 3. Code Review
 
-Invoke the `code-reviewer` subagent on the current diff:
+Invoke the `code-reviewer` agent on the current diff:
 
 ```
 Delegate to code-reviewer: "Review the changes since origin/main for bugs and security issues"

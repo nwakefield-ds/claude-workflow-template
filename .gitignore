@@ -2,6 +2,11 @@
 .env
 *.env.local
 
+# Claude Code local files
+.claude/settings.local.json
+HANDOFF.md
+WORKING_SET.md
+
 # Doc check skips log
 .doc-check-skips.log
 

@@ -1,3 +1,8 @@
+---
+name: debug-test-failure
+description: Systematic workflow for debugging failing tests
+---
+
 # Debug Test Failure
 
 ## Workflow
