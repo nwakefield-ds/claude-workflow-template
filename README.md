@@ -30,6 +30,7 @@ docs/
     health-check/SKILL.md    ← /health-check — weekly drift detection
     improve/SKILL.md         ← /improve — monthly analysis and proposals
     audit/SKILL.md           ← /audit — full operating model review
+    template-update/SKILL.md ← /template-update — check for upstream template changes
     add-api-endpoint/SKILL.md ← Example: endpoint addition workflow (replace for your stack)
     debug-test-failure/SKILL.md ← Example: pytest debugging workflow (replace for your stack)
   rules/
@@ -112,6 +113,7 @@ After installing, these commands work in Claude Code:
 | `/health-check` | Weekly drift-detection scan — stale references, unenforced rules, unused config, tooling mismatches. |
 | `/improve` | Monthly deep analysis — work patterns, new capabilities, improvement proposals, upstream suggestions. |
 | `/audit` | Full operating model review — evaluates whether your agent/skill/rule setup fits your repo. |
+| `/template-update` | Checks if your template files are out of date with the upstream workflow template. Reports only. |
 
 Skill definitions live in `.claude/skills/` — edit them to customize the workflow for your project.
 
@@ -169,7 +171,11 @@ The cycle: `/health-check` catches drift, `/improve` finds opportunities, `/audi
 
 ## Updating from the Template
 
-If your project was created from this template, you can pull in future updates:
+If your project was created from this template, you can pull in future updates.
+
+### Check for updates
+
+Run `/template-update` in Claude Code. It will compare your local template files against the upstream repo and report what's changed, what's new, and what to do.
 
 ### First time: add the template remote
 
