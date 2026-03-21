@@ -149,6 +149,29 @@ The populated version gives Claude exactly the context it needs to work accurate
 
 ---
 
+## Updating from the Template
+
+If your project was created from this template, you can pull in future updates:
+
+### First time: add the template remote
+
+```bash
+git remote add template https://github.com/nwakefield-ds/claude-workflow-template.git
+```
+
+### Pull updates
+
+```bash
+git fetch template
+git merge template/main --allow-unrelated-histories
+```
+
+Resolve any conflicts (your project-specific changes in `docs/`, `CLAUDE.md`, etc. take priority), then commit.
+
+> **Tip:** Template files you haven't customized (agents, skills, scripts) will merge cleanly. Files you've edited (like `docs/context.md`) may conflict — just keep your version.
+
+---
+
 ## Customization
 
 The template is intentionally minimal. Add your own:
