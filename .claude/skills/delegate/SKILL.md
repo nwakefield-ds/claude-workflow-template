@@ -1,5 +1,5 @@
 ---
-name: delegate-to-subagent
+name: delegate
 description: Guidance on when and how to delegate work to agents
 ---
 

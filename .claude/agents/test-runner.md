@@ -4,6 +4,7 @@ description: Runs lint, test, and build checks and summarizes results without ed
 tools: Read, Glob, Grep, Bash(pytest*), Bash(python -m pytest*), Bash(python3 -m pytest*), Bash(npm test*), Bash(npm run*), Bash(npm ci*), Bash(npx eslint*), Bash(npx playwright*), Bash(go test*), Bash(bundle exec rspec*), Bash(python*), Bash(python3*), Bash(cd *), Bash(./scripts/*)
 disallowedTools: Edit, Write, Bash(git add*), Bash(git commit*), Bash(git push*), Bash(rm *), Bash(sudo*)
 model: haiku
+effort: low
 ---
 
 # Test Runner Agent

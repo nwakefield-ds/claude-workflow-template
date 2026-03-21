@@ -4,6 +4,8 @@ description: Updates project docs (docs/*) when code changes, never edits applic
 tools: Read, Glob, Grep, Edit(docs/*)
 disallowedTools: Write, Edit(src/*), Edit(backend/*), Edit(frontend*/*), Edit(.claude/*), Bash
 model: haiku
+memory: project
+effort: low
 ---
 
 # Doc Scribe Agent

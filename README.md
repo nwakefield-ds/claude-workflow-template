@@ -25,13 +25,13 @@ docs/
   skills/
     finish/SKILL.md          ← /finish — end-of-task workflow
     context-refresh/SKILL.md ← /context-refresh — session start workflow
-    add-api-endpoint/SKILL.md ← Step-by-step endpoint addition workflow
+    delegate/SKILL.md        ← /delegate — when/how to use agents
     update-memory-docs/SKILL.md ← Quick doc update patterns
-    debug-test-failure/SKILL.md ← Systematic debugging workflow
-    delegate-to-subagent/SKILL.md ← When/how to use agents
     health-check/SKILL.md    ← /health-check — weekly drift detection
     improve/SKILL.md         ← /improve — monthly analysis and proposals
     audit/SKILL.md           ← /audit — full operating model review
+    add-api-endpoint/SKILL.md ← Example: endpoint addition workflow (replace for your stack)
+    debug-test-failure/SKILL.md ← Example: pytest debugging workflow (replace for your stack)
   rules/
     common-pitfalls.md       ← Anti-patterns and how to avoid them
     model-assignments.md     ← Agent model assignments (single source of truth)
@@ -95,7 +95,7 @@ Change to your formatter:
 
 **Graduated enforcement** — the verify script blocks `feat:` commits without doc updates, warns on `fix:` and `refactor:` commits (but does not block), and skips checks entirely for `chore:`/`test:`/`ci:` commits.
 
-**Agents** keep expensive work out of your main context window. `doc-scribe` (Haiku) handles doc updates cheaply. `code-reviewer` (Sonnet) catches bugs before they reach production.
+**Agents** keep expensive work out of your main context window. `doc-scribe` (Haiku) handles doc updates cheaply. `code-reviewer` (Sonnet) catches bugs before they reach production. Both use `memory: project` to accumulate knowledge across sessions, and `effort` levels are tuned to match task complexity.
 
 **Session continuity** — `HANDOFF.md` is auto-saved before compaction and captures your git state so the next session can pick up where you left off.
 
@@ -196,5 +196,7 @@ The template is intentionally minimal. Add your own:
 - `.claude/rules/` files for stack-specific patterns
 - Additional agents in `.claude/agents/` for specialized work (e.g., a `migration-writer`)
 - Extra skills in `.claude/skills/` for your common workflows
+
+The skills `add-api-endpoint` and `debug-test-failure` are included as examples — replace them with workflows that match your stack.
 
 Model assignments for agents are centralized in `.claude/rules/model-assignments.md`.

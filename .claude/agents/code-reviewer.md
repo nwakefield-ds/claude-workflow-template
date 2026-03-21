@@ -4,6 +4,8 @@ description: Reviews code diffs for bugs, security issues, and consistency with 
 tools: Read, Glob, Grep, Bash(git diff*), Bash(git log*), Bash(git show*), Bash(wc*)
 disallowedTools: Edit, Write, Bash(git add*), Bash(git commit*), Bash(git push*), Bash(git reset*), Bash(rm *), Bash(sudo*)
 model: sonnet
+memory: project
+effort: high
 ---
 
 # Code Reviewer Agent

@@ -5,17 +5,17 @@ Update this file when changing models — then update each agent's frontmatter t
 
 ## Current Assignments
 
-| Agent | Model | Reason |
-|-------|-------|--------|
-| `doc-scribe` | `haiku` | Doc updates are simple edits; Haiku is cheaper than Sonnet |
-| `test-runner` | `haiku` | Reading test output requires no deep reasoning |
-| `code-reviewer` | `sonnet` | Security review and bug detection need strong reasoning |
-| Main session | `sonnet` | Default for interactive coding sessions |
+| Agent | Model | Effort | Memory | Reason |
+|-------|-------|--------|--------|--------|
+| `doc-scribe` | `haiku` | `low` | `project` | Doc updates are simple edits; Haiku is cheaper than Sonnet |
+| `test-runner` | `haiku` | `low` | — | Reading test output requires no deep reasoning |
+| `code-reviewer` | `sonnet` | `high` | `project` | Security review and bug detection need strong reasoning |
+| Main session | `sonnet` | — | — | Default for interactive coding sessions |
 
 ## Changing a Model
 
 1. Update the table above
-2. Edit the `model:` field in the relevant `.claude/agents/*.md` frontmatter
+2. Edit the `model:`, `effort:`, and `memory:` fields in the relevant `.claude/agents/*.md` frontmatter
 3. Commit both files together so they stay in sync
 
 ## Available Models

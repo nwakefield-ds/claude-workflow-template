@@ -21,6 +21,11 @@
 python3 -m pytest tests/ -v
 ```
 
+### Enforcement model:
+- **Hook-enforced** (automatic): auto-format on save, `.env` edit blocking, HANDOFF.md save before compaction
+- **Script-enforced** (manual): `verify-memory-and-checks.sh` — doc updates with code changes, lint, tests
+- **Advisory** (LLM follows instructions): conventional commits, reading docs before coding, delegation patterns
+
 ---
 
 ## Project Docs
