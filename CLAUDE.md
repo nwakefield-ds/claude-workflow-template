@@ -51,6 +51,15 @@ Use Read/Edit/Grep directly for 1-3 files.
 
 ---
 
+## Introspection
+
+This repo includes commands to maintain setup quality:
+- `/health-check` — weekly, catch config drift
+- `/improve` — monthly, find improvements and research new capabilities
+- `/audit` — quarterly or when the repo's shape changes significantly
+
+---
+
 ## Context Management
 
 - Compact at ~65% context (~130K tokens) with `/compact`

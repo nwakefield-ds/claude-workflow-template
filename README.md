@@ -29,6 +29,9 @@ docs/
     update-memory-docs/SKILL.md ← Quick doc update patterns
     debug-test-failure/SKILL.md ← Systematic debugging workflow
     delegate-to-subagent/SKILL.md ← When/how to use agents
+    health-check/SKILL.md    ← /health-check — weekly drift detection
+    improve/SKILL.md         ← /improve — monthly analysis and proposals
+    audit/SKILL.md           ← /audit — full operating model review
   rules/
     common-pitfalls.md       ← Anti-patterns and how to avoid them
     model-assignments.md     ← Agent model assignments (single source of truth)
@@ -106,6 +109,9 @@ After installing, these commands work in Claude Code:
 |---------|-------------|
 | `/context-refresh` | Re-reads all `docs/` files and produces a structured project summary. Use at session start. |
 | `/finish` | Full end-of-task workflow: update docs → run verify script → delegate to code-reviewer → suggest conventional commit message. |
+| `/health-check` | Weekly drift-detection scan — stale references, unenforced rules, unused config, tooling mismatches. |
+| `/improve` | Monthly deep analysis — work patterns, new capabilities, improvement proposals, upstream suggestions. |
+| `/audit` | Full operating model review — evaluates whether your agent/skill/rule setup fits your repo. |
 
 Skill definitions live in `.claude/skills/` — edit them to customize the workflow for your project.
 
@@ -146,6 +152,18 @@ built for small teams that don't need full project management overhead.
 ```
 
 The populated version gives Claude exactly the context it needs to work accurately without re-reading source files every session.
+
+---
+
+## Keeping Your Setup Healthy
+
+This template includes three commands for maintaining and improving your Claude Code configuration:
+
+- **`/health-check`** — Run weekly. Fast scan for stale references, unenforced rules, unused config, and tooling drift. Takes a few minutes.
+- **`/improve`** — Run monthly or after major changes. Analyzes your git history and work patterns, researches new Claude Code features and tooling updates, proposes improvements, and flags anything worth suggesting back to this template.
+- **`/audit`** — Run on first setup or quarterly. Full operating model review — evaluates whether your current agent/skill/rule setup is the right fit for your repo.
+
+The cycle: `/health-check` catches drift, `/improve` finds opportunities, `/audit` reassesses the whole model when needed. Improvements that generalize get suggested back to this template via GitHub issues.
 
 ---
 
