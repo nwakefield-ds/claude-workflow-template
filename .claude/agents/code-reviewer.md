@@ -6,6 +6,7 @@ disallowedTools: Edit, Write, Bash(git add*), Bash(git commit*), Bash(git push*)
 model: sonnet
 memory: project
 effort: high
+permissionMode: plan
 ---
 
 # Code Reviewer Agent

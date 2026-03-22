@@ -12,7 +12,7 @@
 - Plan your approach before implementing — outline what you'll change and why, especially for non-trivial tasks. Use plan mode for complex features.
 
 ### After coding:
-- Update `docs/todos.md` if a task was completed or discovered
+- Update project docs if anything changed (see table below)
 - Run `./scripts/verify-memory-and-checks.sh`
 - Use `/finish` for commit workflow
 

@@ -133,16 +133,20 @@ EXAMPLE:
 ## Claude Code Configuration
 
 **Project Rules:**
-- `CLAUDE.md` — Memory system, core workflow, delegation basics, context management
-- `.claude/rules/` — Stack-specific patterns
+- `CLAUDE.md` — Core workflow, delegation, conventions, context management
+- `.claude/rules/` — Anti-patterns, model assignments
 
 **Agents:**
-- `doc-scribe` — Updates docs/* only, uses Haiku
-- `test-runner` — Runs tests read-only, uses Haiku
-- `code-reviewer` — Reviews diffs, uses Sonnet
+- `doc-scribe` — Updates docs/* only, uses Haiku (`memory: project`, `effort: low`)
+- `test-runner` — Runs tests read-only, uses Haiku (`effort: low`)
+- `code-reviewer` — Reviews diffs, uses Sonnet (`memory: project`, `effort: high`)
 
 **Skills:**
-- `.claude/skills/` — add-api-endpoint, update-memory-docs, debug-test-failure, delegate-to-subagent
+- `/finish`, `/context-refresh` — Core workflow
+- `/health-check`, `/improve`, `/audit` — Introspection system
+- `/template-update` — Upstream sync check
+- `/delegate`, `/update-memory-docs` — Reference guides
+- `/add-api-endpoint`, `/debug-test-failure` — Examples (replace for your stack)
 
 **Hooks:**
 - PreCompact: Save HANDOFF.md before auto-compaction
