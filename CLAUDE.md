@@ -63,6 +63,7 @@ This repo includes commands to maintain setup quality:
 - `/health-check` — weekly, catch config drift
 - `/improve` — monthly, find improvements and research new capabilities
 - `/audit` — quarterly or when the repo's shape changes significantly
+- `/zero-base` — as needed, first-principles re-evaluation that assumes nothing is sacred
 
 ---
 

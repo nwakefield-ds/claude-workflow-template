@@ -28,6 +28,7 @@ docs/
     health-check/SKILL.md    ← /health-check — weekly drift detection
     improve/SKILL.md         ← /improve — monthly analysis and proposals
     audit/SKILL.md           ← /audit — full operating model review
+    zero-base/SKILL.md       ← /zero-base — first-principles system re-evaluation
     template-update/SKILL.md ← /template-update — check for upstream template changes
     delegate/SKILL.md        ← /delegate — when/how to use agents
     update-memory-docs/SKILL.md ← Quick doc update patterns
@@ -143,6 +144,7 @@ Agents keep expensive work out of your main context window:
 | `/audit` | Full operating model review — evaluates whether your agent/skill/rule setup fits your repo. |
 | `/template-update` | Checks if your template files are out of date with the upstream workflow template. Reports only. |
 | `/fix-issue <number>` | Fix a GitHub issue end-to-end: fetch → search → implement → test → commit → PR. |
+| `/zero-base` | First-principles re-evaluation — assumes nothing is sacred, proposes ideal architecture. |
 
 Skill definitions live in `.claude/skills/` — edit them to customize the workflow for your project.
 
@@ -155,9 +157,10 @@ This template doesn't just configure Claude Code — it maintains and improves i
 ### The introspection cycle
 
 ```
-Weekly:  /health-check  →  Catch config drift, stale references, tooling mismatches
-Monthly: /improve       →  Analyze work patterns, research new features, propose improvements
-Quarterly: /audit       →  Reassess the entire operating model
+Weekly:     /health-check  →  Catch config drift, stale references, tooling mismatches
+Monthly:    /improve       →  Analyze work patterns, research new features, propose improvements
+Quarterly:  /audit         →  Reassess the entire operating model
+As needed:  /zero-base     →  First-principles re-evaluation — question everything
 ```
 
 ### How `/improve` works
