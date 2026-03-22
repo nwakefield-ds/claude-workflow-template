@@ -9,6 +9,7 @@
 ### Before coding:
 - Check `docs/todos.md` for current priorities
 - Read the actual code files you'll be changing
+- Plan your approach before implementing — outline what you'll change and why, especially for non-trivial tasks. Use plan mode for complex features.
 
 ### After coding:
 - Update `docs/todos.md` if a task was completed or discovered

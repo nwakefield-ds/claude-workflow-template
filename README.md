@@ -88,6 +88,8 @@ Change to your formatter:
 - **Go:** `gofmt -w "$FILE"`
 - **Ruby:** `rubocop -a "$FILE"`
 
+> **Note:** Auto-formatting hooks run on every edit, which costs context tokens (each file modification triggers a system-reminder). If you notice high token usage, consider disabling the hook and running your formatter manually between sessions.
+
 ---
 
 ## How It Works
