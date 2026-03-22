@@ -24,7 +24,11 @@ For anything proposed, include: the recurring pattern it addresses (cite evidenc
 
 ## Part 2: External research
 
-Search the web for recent developments. Focus on what's actionable for this repo.
+Fetch and review these reference sources, then search for additional recent developments. Focus on what's actionable for this repo.
+
+**Reference sources** — Fetch and review both of these:
+1. https://code.claude.com/docs/en/best-practices — Official Anthropic best practices. Check for new recommendations, features, or patterns that differ from our current setup.
+2. https://rosmur.github.io/claudecode-best-practices/ — Community-sourced best practices synthesized from 12+ sources. Compare our template against their recommendations and flag any gaps.
 
 **Claude Code updates** — Search for new Claude Code features released in the last 30 days (docs.anthropic.com, changelog, GitHub). Note what each does, whether it replaces custom config, whether it enables new capabilities, and concrete next steps.
 

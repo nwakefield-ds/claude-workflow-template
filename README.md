@@ -1,6 +1,6 @@
 # Claude Code Workflow Template
 
-A portable workflow system for Claude Code projects. Provides persistent project docs, automated doc enforcement, code review, and session continuity.
+A self-improving workflow system for Claude Code projects. Provides project docs, automated enforcement, code review agents, session continuity, and built-in introspection that keeps your setup current as Claude Code evolves.
 
 ## What's Included
 
@@ -19,20 +19,20 @@ docs/
   hooks/
     save-handoff.sh          ← Captures git state before compaction
   agents/
-    doc-scribe.md            ← Haiku agent for updating docs (cost-effective)
-    test-runner.md           ← Haiku agent for running tests (read-only)
-    code-reviewer.md         ← Sonnet agent for reviewing diffs
+    doc-scribe.md            ← Haiku agent for updating docs (memory: project, effort: low)
+    test-runner.md           ← Haiku agent for running tests (effort: low)
+    code-reviewer.md         ← Sonnet agent for reviewing diffs (memory: project, effort: high, plan mode)
   skills/
     finish/SKILL.md          ← /finish — end-of-task workflow
     context-refresh/SKILL.md ← /context-refresh — session start workflow
-    delegate/SKILL.md        ← /delegate — when/how to use agents
-    update-memory-docs/SKILL.md ← Quick doc update patterns
     health-check/SKILL.md    ← /health-check — weekly drift detection
     improve/SKILL.md         ← /improve — monthly analysis and proposals
     audit/SKILL.md           ← /audit — full operating model review
     template-update/SKILL.md ← /template-update — check for upstream template changes
-    add-api-endpoint/SKILL.md ← Example: endpoint addition workflow (replace for your stack)
-    debug-test-failure/SKILL.md ← Example: pytest debugging workflow (replace for your stack)
+    delegate/SKILL.md        ← /delegate — when/how to use agents
+    update-memory-docs/SKILL.md ← Quick doc update patterns
+    add-api-endpoint/SKILL.md ← Example: replace for your stack
+    debug-test-failure/SKILL.md ← Example: replace for your stack
   rules/
     common-pitfalls.md       ← Anti-patterns and how to avoid them
     model-assignments.md     ← Agent model assignments (single source of truth)
@@ -72,15 +72,23 @@ ln -s ../../scripts/verify-memory-and-checks.sh .git/hooks/pre-push
 chmod +x .git/hooks/pre-push
 ```
 
-### 4. Add stack-specific rules (optional)
+### 4. Run the initial audit
 
-Create `.claude/rules/backend/` or `.claude/rules/frontend/` with patterns for your stack:
+```
+/audit
+```
+
+This evaluates whether the default agent/skill/rule setup fits your repo and recommends adjustments.
+
+### 5. Add stack-specific rules (optional)
+
+Create `.claude/rules/backend.md` or `.claude/rules/frontend.md` with patterns for your stack:
 - Error handling conventions
 - Testing patterns
 - Naming conventions
 - Security rules
 
-### 5. Adjust hooks for your language
+### 6. Adjust hooks for your language
 
 Edit `.claude/settings.json` — the PostToolUse hook auto-formats Python with `black`.
 Change to your formatter:
@@ -94,19 +102,35 @@ Change to your formatter:
 
 ## How It Works
 
-**Project docs** (`docs/`) are the source of truth. Claude reads them at the start of every session and updates them after every significant change.
+### Project docs as source of truth
 
-**Graduated enforcement** — the verify script blocks `feat:` commits without doc updates, warns on `fix:` and `refactor:` commits (but does not block), and skips checks entirely for `chore:`/`test:`/`ci:` commits.
+`docs/` files are read at session start and updated after every significant change. Claude uses them to understand the project without re-reading source files every time.
 
-**Agents** keep expensive work out of your main context window. `doc-scribe` (Haiku) handles doc updates cheaply. `code-reviewer` (Sonnet) catches bugs before they reach production. Both use `memory: project` to accumulate knowledge across sessions, and `effort` levels are tuned to match task complexity.
+### Graduated enforcement
 
-**Session continuity** — `HANDOFF.md` is auto-saved before compaction and captures your git state so the next session can pick up where you left off.
+The verify script blocks `feat:` commits without doc updates, warns on `fix:` and `refactor:` commits (but does not block), and skips checks entirely for `chore:`/`test:`/`ci:` commits. Rules are enforced at three levels:
+
+- **Hook-enforced** (automatic): auto-format on save, `.env` edit blocking, HANDOFF.md save before compaction
+- **Script-enforced** (manual): `verify-memory-and-checks.sh` — doc updates with code changes, lint, tests
+- **Advisory** (LLM follows instructions): conventional commits, reading docs before coding, delegation patterns
+
+### Cost-optimized agents
+
+Agents keep expensive work out of your main context window:
+
+| Agent | Model | Effort | Memory | Purpose |
+|-------|-------|--------|--------|---------|
+| `doc-scribe` | Haiku | Low | Project | Update docs cheaply |
+| `test-runner` | Haiku | Low | — | Run tests, report results |
+| `code-reviewer` | Sonnet | High | Project | Catch bugs and security issues (plan mode — can't edit code) |
+
+### Session continuity
+
+`HANDOFF.md` is auto-saved before compaction via a PreCompact hook, capturing git state so the next session picks up where you left off.
 
 ---
 
 ## Skills (Slash Commands)
-
-After installing, these commands work in Claude Code:
 
 | Command | What it does |
 |---------|-------------|
@@ -121,9 +145,46 @@ Skill definitions live in `.claude/skills/` — edit them to customize the workf
 
 ---
 
-## Example: What a Populated `docs/context.md` Looks Like
+## Self-Improving Workflow
 
-Below is a before/after for a toy Node.js task API. The `[PLACEHOLDER]` template on the left becomes the real project context on the right.
+This template doesn't just configure Claude Code — it maintains and improves itself over time.
+
+### The introspection cycle
+
+```
+Weekly:  /health-check  →  Catch config drift, stale references, tooling mismatches
+Monthly: /improve       →  Analyze work patterns, research new features, propose improvements
+Quarterly: /audit       →  Reassess the entire operating model
+```
+
+### How `/improve` works
+
+Each month, `/improve` does four things:
+
+1. **Reflects on the project** — analyzes git history, identifies recurring patterns, evaluates whether existing agents and skills are still earning their keep
+2. **Researches what's new** — fetches the latest from [Claude Code best practices](https://code.claude.com/docs/en/best-practices) and [community recommendations](https://rosmur.github.io/claudecode-best-practices/), checks for new features and tooling updates
+3. **Proposes improvements** — up to 5 changes ranked by impact, with effort estimates
+4. **Feeds back to the template** — discoveries that would benefit all repos using this template get flagged for upstream contribution via GitHub issues
+
+### How it stays current
+
+The template evolves through two feedback loops:
+
+- **Downstream → Upstream:** When `/improve` finds a gap that applies to all repos, it drafts a GitHub issue for this template. Other repos benefit when the fix is merged.
+- **Upstream → Downstream:** Run `/template-update` to check if your copy is behind. It compares your local template files against the upstream repo and reports what's changed.
+
+```
+┌─────────────────┐     /template-update     ┌─────────────────┐
+│  Your Project    │ ◄────────────────────── │  This Template   │
+│                  │                          │                  │
+│  /improve finds  │ ──── GitHub issue ────► │  Merged upstream │
+│  a general fix   │                          │                  │
+└─────────────────┘                          └─────────────────┘
+```
+
+---
+
+## Example: What a Populated `docs/context.md` Looks Like
 
 **Before (template):**
 ```markdown
@@ -155,20 +216,6 @@ built for small teams that don't need full project management overhead.
 - 47 unit tests (82% coverage)
 ```
 
-The populated version gives Claude exactly the context it needs to work accurately without re-reading source files every session.
-
----
-
-## Keeping Your Setup Healthy
-
-This template includes three commands for maintaining and improving your Claude Code configuration:
-
-- **`/health-check`** — Run weekly. Fast scan for stale references, unenforced rules, unused config, and tooling drift. Takes a few minutes.
-- **`/improve`** — Run monthly or after major changes. Analyzes your git history and work patterns, researches new Claude Code features and tooling updates, proposes improvements, and flags anything worth suggesting back to this template.
-- **`/audit`** — Run on first setup or quarterly. Full operating model review — evaluates whether your current agent/skill/rule setup is the right fit for your repo.
-
-The cycle: `/health-check` catches drift, `/improve` finds opportunities, `/audit` reassesses the whole model when needed. Improvements that generalize get suggested back to this template via GitHub issues.
-
 ---
 
 ## Updating from the Template
@@ -177,7 +224,7 @@ If your project was created from this template, you can pull in future updates.
 
 ### Check for updates
 
-Run `/template-update` in Claude Code. It will compare your local template files against the upstream repo and report what's changed, what's new, and what to do.
+Run `/template-update` in Claude Code. It compares your local template files against the upstream repo and reports what's changed, what's new, and what to do.
 
 ### First time: add the template remote
 
