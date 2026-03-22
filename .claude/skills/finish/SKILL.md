@@ -1,6 +1,7 @@
 ---
 name: finish
 description: Full end-of-task workflow — update docs, run checks, review code, suggest commit
+disable-model-invocation: true
 ---
 
 # /finish

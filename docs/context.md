@@ -145,8 +145,9 @@ EXAMPLE:
 - `/finish`, `/context-refresh` — Core workflow
 - `/health-check`, `/improve`, `/audit` — Introspection system
 - `/template-update` — Upstream sync check
+- `/fix-issue` — Fix a GitHub issue end-to-end (uses `$ARGUMENTS`)
 - `/delegate`, `/update-memory-docs` — Reference guides
-- `/add-api-endpoint`, `/debug-test-failure` — Examples (replace for your stack)
+- `/debug-test-failure` — Example (replace for your stack)
 
 **Hooks:**
 - PreCompact: Save HANDOFF.md before auto-compaction

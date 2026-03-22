@@ -31,7 +31,7 @@ docs/
     template-update/SKILL.md ← /template-update — check for upstream template changes
     delegate/SKILL.md        ← /delegate — when/how to use agents
     update-memory-docs/SKILL.md ← Quick doc update patterns
-    add-api-endpoint/SKILL.md ← Example: replace for your stack
+    fix-issue/SKILL.md       ← /fix-issue — fix a GitHub issue end-to-end (uses $ARGUMENTS)
     debug-test-failure/SKILL.md ← Example: replace for your stack
   rules/
     common-pitfalls.md       ← Anti-patterns and how to avoid them
@@ -63,6 +63,8 @@ vim docs/dev.md       # Add your setup commands
 # Open Claude Code and run:
 # "Read the codebase and populate docs/context.md, docs/dev.md, and docs/decisions.md"
 ```
+
+> **Tip:** You can also run `/init` to generate a starter CLAUDE.md from your project structure, then layer the template's workflow rules on top.
 
 ### 3. Install the pre-push hook
 
@@ -140,6 +142,7 @@ Agents keep expensive work out of your main context window:
 | `/improve` | Monthly deep analysis — work patterns, new capabilities, improvement proposals, upstream suggestions. |
 | `/audit` | Full operating model review — evaluates whether your agent/skill/rule setup fits your repo. |
 | `/template-update` | Checks if your template files are out of date with the upstream workflow template. Reports only. |
+| `/fix-issue <number>` | Fix a GitHub issue end-to-end: fetch → search → implement → test → commit → PR. |
 
 Skill definitions live in `.claude/skills/` — edit them to customize the workflow for your project.
 
@@ -252,6 +255,6 @@ The template is intentionally minimal. Add your own:
 - Additional agents in `.claude/agents/` for specialized work (e.g., a `migration-writer`)
 - Extra skills in `.claude/skills/` for your common workflows
 
-The skills `add-api-endpoint` and `debug-test-failure` are included as examples — replace them with workflows that match your stack.
+The skill `debug-test-failure` is included as an example — replace it with workflows that match your stack. The `/fix-issue` skill works with any repo that uses GitHub Issues.
 
 Model assignments for agents are centralized in `.claude/rules/model-assignments.md`.

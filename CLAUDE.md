@@ -70,4 +70,6 @@ This repo includes commands to maintain setup quality:
 
 - Compact at ~65% context (~130K tokens) with `/compact`
 - Use `/clear` between unrelated tasks
+- Use `/btw` for side questions that shouldn't enter context history
+- Use `/rewind` or `Esc+Esc` to restore conversation and code to any checkpoint
 - HANDOFF.md auto-saved before compaction (PreCompact hook)
