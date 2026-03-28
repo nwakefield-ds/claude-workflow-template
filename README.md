@@ -33,7 +33,6 @@ docs/
     delegate/SKILL.md        ← /delegate — when/how to use agents
     update-memory-docs/SKILL.md ← Quick doc update patterns
     fix-issue/SKILL.md       ← /fix-issue — fix a GitHub issue end-to-end (uses $ARGUMENTS)
-    debug-test-failure/SKILL.md ← Example: replace for your stack
   rules/
     common-pitfalls.md       ← Anti-patterns and how to avoid them
     model-assignments.md     ← Agent model assignments (single source of truth)
@@ -258,6 +257,8 @@ The template is intentionally minimal. Add your own:
 - Additional agents in `.claude/agents/` for specialized work (e.g., a `migration-writer`)
 - Extra skills in `.claude/skills/` for your common workflows
 
-The skill `debug-test-failure` is included as an example — replace it with workflows that match your stack. The `/fix-issue` skill works with any repo that uses GitHub Issues.
+The `/fix-issue` skill works with any repo that uses GitHub Issues. Add your own domain-specific skills for common workflows.
+
+> **Tip:** If you add domain skills (e.g., `api-conventions`, `error-handling-rules`) that should apply automatically rather than being invoked manually, consider adding a `UserPromptSubmit` hook that detects relevant keywords and injects a skill activation reminder. Workflow skills like `/finish` and `/health-check` don't need this — they're invoked explicitly.
 
 Model assignments for agents are centralized in `.claude/rules/model-assignments.md`.

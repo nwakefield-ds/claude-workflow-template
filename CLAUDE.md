@@ -69,7 +69,7 @@ This repo includes commands to maintain setup quality:
 
 ## Context Management
 
-- Compact at ~65% context (~130K tokens) with `/compact`
+- Compact at ~65% context (~130K tokens) with `/compact` (use `/compact Focus on X` for targeted compaction)
 - Use `/clear` between unrelated tasks
 - Use `/btw` for side questions that shouldn't enter context history
 - Use `/rewind` or `Esc+Esc` to restore conversation and code to any checkpoint

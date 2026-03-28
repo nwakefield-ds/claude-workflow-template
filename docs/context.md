@@ -147,7 +147,6 @@ EXAMPLE:
 - `/template-update` — Upstream sync check
 - `/fix-issue` — Fix a GitHub issue end-to-end (uses `$ARGUMENTS`)
 - `/delegate`, `/update-memory-docs` — Reference guides
-- `/debug-test-failure` — Example (replace for your stack)
 
 **Hooks:**
 - PreCompact: Save HANDOFF.md before auto-compaction
