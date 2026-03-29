@@ -74,3 +74,38 @@ This repo includes commands to maintain setup quality:
 - Use `/btw` for side questions that shouldn't enter context history
 - Use `/rewind` or `Esc+Esc` to restore conversation and code to any checkpoint
 - HANDOFF.md auto-saved before compaction (PreCompact hook)
+
+## TODO system
+
+This repo uses a structured TODO tracking system.
+
+### Reading TODOs
+- `docs/todos.md` is the lightweight index. Read it at the start of every session.
+- Full specs live in `docs/plan/T-XX-slug.md`. Read the spec before starting work on a task.
+
+### TODO.md entry format (enforced by linter)
+Each entry under a section (Active / Blocked / Done) follows this pattern:
+```
+### T-XX: Short title `slug`
+P1 | M | Status: open | Owner: backend
+Spec: docs/plan/T-XX-slug.md
+- [ ] deliverable 1
+- [ ] deliverable 2
+- [ ] deliverable 3
+Files: `src/auth/`, `tests/auth/`
+```
+
+### Rules for agents
+1. **Start of session:** read `docs/todos.md`. Identify your task or pick the highest priority open task.
+2. **Claim work:** change Status from `open` to `in-progress` before starting.
+3. **Read the spec:** open the linked spec file in `docs/plan/` before writing code.
+4. **Check off deliverables:** mark `- [x]` as you complete each one.
+5. **Update status:** set `done` when all deliverables are checked. Move the entry to the `## Done` section.
+6. **Never delete entries:** completed tasks stay in `## Done` for history.
+7. **Adding new tasks:** use `./scripts/todo.sh add <slug> "<title>"` or manually follow the format.
+8. **Before committing:** run `./scripts/lint-todo.sh` to validate format.
+
+### Valid values
+- **Priority:** P0 (critical), P1 (high), P2 (medium), P3 (low)
+- **Effort:** XS (<1h), S (1-4h), M (4h-2d), L (2-5d), XL (>5d)
+- **Status:** open, in-progress, blocked, done
