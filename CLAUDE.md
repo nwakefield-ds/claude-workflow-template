@@ -79,6 +79,8 @@ This repo includes commands to maintain setup quality:
 
 This repo uses a structured TODO tracking system.
 
+**Check project size first:** read `scripts/config.sh`. If `PROJECT_SIZE=small`, skip the structured TODO workflow — `docs/todos.md` is a free-form checklist and no format is enforced.
+
 ### Reading TODOs
 - `docs/todos.md` is the lightweight index. Read it at the start of every session.
 - Full specs live in `docs/plan/T-XX-slug.md`. Read the spec before starting work on a task.

@@ -63,7 +63,10 @@ cp .env.example .env
 [e.g., python scripts/init_db.py]
 [e.g., npm run db:migrate]
 
-# 5. Verify
+# 5. Install git hooks (one-time)
+./scripts/setup-hooks.sh
+
+# 6. Verify
 ./scripts/verify-memory-and-checks.sh
 ```
 

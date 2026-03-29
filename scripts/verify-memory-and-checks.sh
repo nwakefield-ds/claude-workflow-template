@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+# Load project config (PROJECT_SIZE, etc.)
+# shellcheck source=scripts/config.sh
+source "$(dirname "${BASH_SOURCE[0]}")/config.sh" 2>/dev/null || true
+PROJECT_SIZE="${PROJECT_SIZE:-normal}"
+
 # ============================================================================
 # Project Doc Enforcement & Pre-Push Checks
 # ============================================================================
@@ -234,6 +239,18 @@ fi
 # The script auto-detects common setups but may need adjustment.
 
 CHECKS_FAILED=0
+
+# ── TODO Format ──────────────────────────────────────────────────────────────
+if [[ "$PROJECT_SIZE" != "small" ]] && [[ -f "docs/todos.md" ]]; then
+  echo "📋 TODO Format..."
+  lint_output=$(bash scripts/lint-todo.sh docs/todos.md 2>&1) && lint_ok=1 || lint_ok=0
+  echo "$lint_output" | sed 's/^/   /'
+  if [[ $lint_ok -eq 0 ]]; then
+    echo "   Run: /migrate-todos to fix format issues"
+    CHECKS_FAILED=1
+  fi
+  echo ""
+fi
 
 # ── Python / FastAPI / Django ────────────────────────────────────────────────
 if [[ -f "requirements.txt" || -f "pyproject.toml" ]] && [[ $CODE_CHANGED -eq 1 ]]; then

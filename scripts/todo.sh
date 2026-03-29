@@ -19,7 +19,7 @@ next_id() {
     if [[ "$line" =~ ^###\ T-([0-9]+): ]]; then
       local num="${BASH_REMATCH[1]}"
       num=$((10#$num))  # force base-10
-      (( num > max )) && max=$num
+      if (( num > max )); then max=$num; fi
     fi
   done < "$TODO_FILE"
   printf "%02d" $((max + 1))
@@ -88,10 +88,48 @@ cmd_done() {
     echo "Not found: ${target}"
     exit 1
   fi
-  # Update status to done
-  # Find the metadata line after the header and replace status
-  sed -i "/^### ${target}:/,/^###/{s/Status: [a-z-]*/Status: done/}" "$TODO_FILE"
-  echo "Marked ${target} as done"
+
+  python3 - "$TODO_FILE" "$target" <<'PYEOF'
+import sys, re
+
+todo_file = sys.argv[1]
+target = sys.argv[2]
+
+with open(todo_file) as f:
+    content = f.read()
+
+# Match entry block: from "### T-XX:" header to next ## or ### heading, or EOF
+target_escaped = re.escape(target)
+m = re.search(r'\n*(### ' + target_escaped + r':.*?)(?=\n## |\n### |\Z)', content, re.DOTALL)
+if not m:
+    print(f"Could not extract block for {target}", file=sys.stderr)
+    sys.exit(1)
+
+raw_match = m.group(0)   # includes leading newlines
+block = m.group(1).strip()
+
+# Update status on the metadata line (line starting with P0-P3)
+block = re.sub(r'(?m)^(P[0-3] \|.*?)Status: [a-z-]+', r'\1Status: done', block)
+
+# Remove block from its current position
+content = content.replace(raw_match, '\n', 1)
+
+# Insert under ## Done, after section header and any HTML comment block
+done_match = re.search(r'(## Done\n(?:<!--.*?-->\n)?)\n*', content, re.DOTALL)
+if done_match:
+    insert_pos = done_match.end()
+    content = content[:insert_pos] + block + '\n\n' + content[insert_pos:]
+else:
+    content = content.rstrip() + '\n\n## Done\n\n' + block + '\n'
+
+# Collapse 3+ consecutive newlines to 2
+content = re.sub(r'\n{3,}', '\n\n', content)
+
+with open(todo_file, 'w') as f:
+    f.write(content)
+
+print(f"Marked {target} as done and moved to ## Done")
+PYEOF
 }
 
 cmd_list() {

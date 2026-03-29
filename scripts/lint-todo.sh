@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Load project config (PROJECT_SIZE)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/config.sh
+source "${SCRIPT_DIR}/config.sh" 2>/dev/null || true
+PROJECT_SIZE="${PROJECT_SIZE:-normal}"
+
+if [[ "$PROJECT_SIZE" == "small" ]]; then
+  echo "Skipping TODO lint (PROJECT_SIZE=small)"
+  exit 0
+fi
+
 TODO_FILE="${1:-docs/todos.md}"
 
 if [ ! -f "$TODO_FILE" ]; then

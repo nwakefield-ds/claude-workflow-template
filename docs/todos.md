@@ -26,17 +26,6 @@ Spec: docs/plan/T-01-test-setup.md
 - [ ] Verify test command runs successfully
 Files: `CLAUDE.md`, `scripts/verify-memory-and-checks.sh`
 
-### T-02: Add authentication `auth`
-P3 | L | Status: open | Owner: unassigned
-Spec: docs/plan/T-02-auth.md
-- [ ] Choose auth strategy (JWT, session, OAuth)
-- [ ] Implement auth middleware
-- [ ] Add login/logout endpoints
-- [ ] Protect routes requiring authentication
-- [ ] Tests
-- [ ] Docs
-Files: `TBD`
-
 ## Blocked
 
 <!-- blocked tasks go here — include reason in spec -->
