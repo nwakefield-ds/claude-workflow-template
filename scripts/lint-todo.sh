@@ -51,7 +51,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 
   # Skip blanks, HTML comments, top-level heading
   [[ -z "$line" ]] && continue
-  [[ "$line" =~ ^# ]] && continue
+  [[ "$line" =~ ^#[^#] ]] && continue
   [[ "$line" =~ ^\<\!-- ]] && continue
   [[ "$line" =~ --\>$ ]] && continue
 
@@ -85,14 +85,14 @@ while IFS= read -r line || [[ -n "$line" ]]; do
   fi
 
   # Metadata line (immediately after header)
-  if $in_entry && [[ "$line" =~ ^P[0-3]\ \| ]]; then
+  if $in_entry && [[ "$line" =~ ^P[0-9]+\ \| ]]; then
     # Validate priority
-    if [[ ! "$line" =~ ^P[0-3] ]]; then
+    if [[ ! "$line" =~ ^P[0-3]\ \| ]]; then
       echo "ERROR line $line_num: invalid priority in '$line'"
       errors=$((errors + 1))
     fi
     # Validate effort
-    if [[ ! "$line" =~ (XS|S|M|L|XL) ]]; then
+    if [[ ! "$line" =~ \|\ (XS|S|M|L|XL)\ \| ]]; then
       echo "ERROR line $line_num: invalid effort (need XS/S/M/L/XL) in '$line'"
       errors=$((errors + 1))
     fi

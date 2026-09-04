@@ -67,3 +67,33 @@ single-tenant with low write volume (<100 writes/day in initial phase).
 - ⚠️ [What this makes harder or trades off]
 
 **Files:** `[file1]`, `[file2]`
+
+## 2026-09-04: Enforcement layer must be self-tested; auto-format hook removed [ACTIVE]
+
+**Context:** A /improve audit found all three "hook-enforced" mechanisms silently
+fail-open: the TODO linter's `^#` catch-all skipped every `### T-XX` entry header,
+the `.env` block parsed a legacy hook JSON schema (current contract nests input
+under `tool_input`) and used a non-blocking exit code, and the auto-format hook
+piped the literal string `$CLAUDE_TOOL_INPUT`. Nothing ever exercised the
+enforcement tooling, so the rot was invisible for months.
+
+**Decision:** Fix the linter and `.env` hook against the current hook contract
+(stdin JSON, `tool_input` nesting, exit 2 + stderr to block); delete the
+auto-format hook instead of fixing it; add `scripts/selftest.sh` (run by
+/health-check and CI) that feeds known-bad inputs through the linter and hooks
+and fails unless they reject them.
+
+**Rationale:**
+- Enforcement that isn't itself tested decays silently — reference-level checks
+  (/health-check's stale-path scan) cannot catch behavioral failures.
+- The format hook was never missed while broken, and current community guidance
+  flags auto-format hooks as a token-burn/retrigger anti-pattern. Deleting beats
+  fixing. Alternative considered: fixing it — rejected as unearned complexity.
+
+**Consequences:**
+- ✅ Fail-open regressions in hooks/linter now surface in /health-check and CI
+- ✅ Downstream repos cloned from the template inherit working guards
+- ⚠️ Python formatting is no longer automatic; run formatters via the verify
+  script or a git hook
+
+**Files:** `scripts/selftest.sh`, `scripts/fixtures/malformed-todos.md`, `scripts/lint-todo.sh`, `.claude/settings.json`, `.github/workflows/selftest.yml`

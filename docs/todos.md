@@ -33,3 +33,12 @@ Files: `CLAUDE.md`, `scripts/verify-memory-and-checks.sh`
 ## Done
 
 <!-- completed tasks moved here for history, pruned monthly -->
+
+### T-02: Fix fail-open enforcement layer `enforcement-fixes`
+P0 | S | Status: done | Owner: claude
+Spec: docs/plan/T-02-enforcement-fixes.md
+- [x] Fix lint-todo.sh header-skip regex (linter was a no-op)
+- [x] Rewrite .env-block hook for current hook contract (tool_input, exit 2)
+- [x] Remove dead auto-format hook; add allow/deny permission lists
+- [x] Add scripts/selftest.sh, bad fixture, and CI workflow
+Files: `scripts/lint-todo.sh`, `.claude/settings.json`, `scripts/selftest.sh`, `.github/workflows/selftest.yml`

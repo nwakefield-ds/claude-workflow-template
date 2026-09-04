@@ -23,7 +23,8 @@ python3 -m pytest tests/ -v
 ```
 
 ### Enforcement model:
-- **Hook-enforced** (automatic): auto-format on save, `.env` edit blocking, HANDOFF.md save before compaction
+- **Hook-enforced** (automatic): `.env` edit blocking, HANDOFF.md save before compaction
+- **Self-tested**: `./scripts/selftest.sh` verifies the hooks and TODO linter actually enforce (run by /health-check and CI)
 - **Script-enforced** (manual): `verify-memory-and-checks.sh` — doc updates with code changes, lint, tests
 - **Advisory** (LLM follows instructions): conventional commits, reading docs before coding, delegation patterns
 
@@ -69,11 +70,11 @@ This repo includes commands to maintain setup quality:
 
 ## Context Management
 
-- Compact at ~65% context (~130K tokens) with `/compact` (use `/compact Focus on X` for targeted compaction)
-- Use `/clear` between unrelated tasks
-- Use `/btw` for side questions that shouldn't enter context history
-- Use `/rewind` or `Esc+Esc` to restore conversation and code to any checkpoint
-- HANDOFF.md auto-saved before compaction (PreCompact hook)
+- Prefer "document & clear" over compaction: working state is auto-saved to HANDOFF.md (PreCompact hook), so at a natural breakpoint run `/clear` and re-ground with `/context-refresh` instead of letting a long session degrade
+- Use `/rewind` or `Esc+Esc` to drop bad recent turns — restores conversation and code to a checkpoint, and is cheaper than compacting
+- Use `/compact Focus on X` only mid-task when there's no clean breakpoint to clear at
+- Use `/clear` between unrelated tasks; `/btw` for side questions that shouldn't enter context history
+- Set model and effort once at session start — mid-session switches invalidate the prompt cache
 
 ## TODO system
 

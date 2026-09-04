@@ -113,6 +113,9 @@ npm start         # Production mode (no hot reload)
 # All tests (with doc enforcement)
 ./scripts/verify-memory-and-checks.sh
 
+# Verify the enforcement layer itself (hooks + TODO linter reject bad input)
+./scripts/selftest.sh
+
 # Backend only
 [e.g., pytest backend/tests/ -v]
 [e.g., npm test]

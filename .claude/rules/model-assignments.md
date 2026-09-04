@@ -26,3 +26,5 @@ Update this file when changing models — then update each agent's frontmatter t
 | `sonnet` | Balanced: code review, architecture, interactive dev |
 | `opus` | Strongest reasoning: complex refactors, security audits |
 | `opusplan` | Opus in plan mode, Sonnet in execution |
+| `fable` | Mythos-class tier above Opus — hardest refactors, deep security audits (higher cost) |
+| `best` | Always resolves to the most capable model available |

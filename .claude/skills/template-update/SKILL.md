@@ -7,6 +7,10 @@ Check whether this project's Claude Code template files are up to date with the 
 
 ## Steps
 
+### 0. Bail out if this IS the template repo
+
+Run `git remote get-url origin`. If it points to `nwakefield-ds/claude-workflow-template`, this checkout is the upstream template itself — comparing it against `template/main` is a no-op. Report "This is the upstream template repo; /template-update only applies to downstream projects" and stop.
+
 ### 1. Ensure the template remote exists
 
 Run `git remote -v` and look for a remote named `template` pointing to:

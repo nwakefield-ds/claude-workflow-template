@@ -14,7 +14,7 @@ docs/
   todos.md                   ← What to work on next (prioritized roadmap)
 
 .claude/
-  settings.json              ← Hooks (auto-format, block .env edits, save HANDOFF)
+  settings.json              ← Permissions (allow/deny) + hooks (block .env edits, save HANDOFF)
   settings.local.example.json ← Template for personal local overrides (gitignored)
   hooks/
     save-handoff.sh          ← Captures git state before compaction
@@ -39,6 +39,7 @@ docs/
 
 scripts/
   verify-memory-and-checks.sh  ← Pre-push hook: enforce docs + run tests
+  selftest.sh                  ← Verifies hooks + TODO linter actually enforce (run in CI)
 
 .env.example                 ← Template for required environment variables
 ```
@@ -90,15 +91,13 @@ Create `.claude/rules/backend.md` or `.claude/rules/frontend.md` with patterns f
 - Naming conventions
 - Security rules
 
-### 6. Adjust hooks for your language
+### 6. Adjust hooks for your project (optional)
 
-Edit `.claude/settings.json` — the PostToolUse hook auto-formats Python with `black`.
-Change to your formatter:
-- **JS/TS:** `prettier --write "$FILE"`
-- **Go:** `gofmt -w "$FILE"`
-- **Ruby:** `rubocop -a "$FILE"`
+`.claude/settings.json` ships two hooks: a PreToolUse guard that blocks direct `.env` edits and a PreCompact hook that saves HANDOFF.md. There is deliberately no auto-format hook — formatting on every edit burns context tokens and can loop with formatter re-edits; run your formatter from the verify script or a git hook instead.
 
-> **Note:** Auto-formatting hooks run on every edit, which costs context tokens (each file modification triggers a system-reminder). If you notice high token usage, consider disabling the hook and running your formatter manually between sessions.
+Hooks receive JSON on stdin with tool arguments nested under `tool_input`; a PreToolUse hook blocks by exiting `2` with a message on stderr.
+
+> **Note:** the `permissions.allow`/`deny` lists reduce prompts and catch obvious destructive commands — they are not a security boundary. Allowed test runners execute project code by design, and read-only git commands can surface anything ever committed (including secrets in history). For real isolation, run agents in a container/sandbox with restricted credentials and egress. After changing any hook, run `./scripts/selftest.sh` — it feeds known-bad inputs through the hooks and linter and fails unless they reject them.
 
 ---
 
@@ -112,7 +111,8 @@ Change to your formatter:
 
 The verify script blocks `feat:` commits without doc updates, warns on `fix:` and `refactor:` commits (but does not block), and skips checks entirely for `chore:`/`test:`/`ci:` commits. Rules are enforced at three levels:
 
-- **Hook-enforced** (automatic): auto-format on save, `.env` edit blocking, HANDOFF.md save before compaction
+- **Hook-enforced** (automatic): `.env` edit blocking, HANDOFF.md save before compaction
+- **Self-tested**: `./scripts/selftest.sh` verifies the hooks and TODO linter actually enforce (run by /health-check and CI)
 - **Script-enforced** (manual): `verify-memory-and-checks.sh` — doc updates with code changes, lint, tests
 - **Advisory** (LLM follows instructions): conventional commits, reading docs before coding, delegation patterns
 

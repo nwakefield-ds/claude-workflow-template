@@ -1,3 +1,8 @@
+---
+name: migrate-todos
+description: Convert a free-form docs/todos.md to the structured T-XX format enforced by scripts/lint-todo.sh
+---
+
 # /migrate-todos
 
 Convert an existing or free-form `docs/todos.md` to the structured T-XX format required by this repo's TODO system.

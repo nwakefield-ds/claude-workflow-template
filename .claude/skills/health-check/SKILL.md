@@ -13,6 +13,7 @@ Run a quick drift-detection scan on the Claude Code setup for this repo. Do not 
 4. **Tooling drift**: Compare lint/format/typecheck/test commands referenced in Claude Code config against what's actually in package.json / pyproject.toml / Makefile. Flag mismatches.
 5. **MCP config**: If .mcp.json exists, verify the servers listed are still relevant. Flag any that look stale.
 6. **Complexity creep**: Count total custom rules, agents, skills, and commands. Flag anything added since the last check and whether it's earning its keep.
+7. **Enforcement self-test**: Run `./scripts/selftest.sh`. It feeds known-bad inputs through the hooks and TODO linter and fails unless they reject them (these guards have silently failed open before). Report ❌ if any test fails, ⚠️ if the script is missing.
 
 **Output:** For each check, report one of:
 
